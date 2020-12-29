@@ -1,7 +1,6 @@
 use ::std::*;
 
 use super::recipe_controller;
-use super::recipe_repository;
 use std::error;
 
 pub struct Router {
@@ -16,11 +15,6 @@ impl Router {
   pub fn run(&self) -> Result<String, Box<dyn error::Error>> {
     println!("Hi there! Welcome to the cookbook! What do you want to do?");
     let mut running = true;
-    let recipe_repository = recipe_repository::RecipeRepository::new()?;
-    for recipe in recipe_repository.recipes {
-      let name = String::from(recipe.name);
-      print!("We found a recipe: {}\n", name)
-    }
   
     while running {
       self.show_actions();

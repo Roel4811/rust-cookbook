@@ -5,11 +5,6 @@ pub struct RecipeRepository {
   pub recipes: Vec<Recipe>,
 }
 
-// pub fn all() -> Vec<Recipe> {
-//   // let recipes = RecipeRepository.recipes;
-//   recipes
-// }
-
 impl RecipeRepository {
   pub fn new() -> Result<RecipeRepository, csv::Error> {
     let recipes = import_csv()?;
@@ -17,6 +12,15 @@ impl RecipeRepository {
       recipes: recipes,
     };
     Ok(recipe_repository)
+  }
+
+  pub fn add(&self, recipe: Recipe) -> bool {
+    self.recipes.push(recipe);
+    true
+  }
+
+  pub fn all(&self) -> &Vec<Recipe> {
+    &self.recipes
   }
 }
 
@@ -30,10 +34,6 @@ fn import_csv() -> Result<Vec<Recipe>, csv::Error> {
 
   for recipe in reader.deserialize() {
     let recipe: Recipe = recipe?;
-    println!(
-      "In {}, built the {} model. It is a {}.",
-      recipe.name, recipe.price, recipe.description,
-    );
     recipes.push(recipe);
   }
 

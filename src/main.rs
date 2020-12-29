@@ -1,6 +1,7 @@
 mod recipe;
 mod recipe_controller;
 mod recipe_repository;
+mod recipe_view;
 mod router;
 
 fn main() {
