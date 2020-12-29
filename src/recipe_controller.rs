@@ -15,19 +15,24 @@ impl RecipeController {
     }
   }
 
-  pub fn add_recipe(&self) -> bool {
+  pub fn add_recipe(&mut self) {
     let name = self.recipe_view.ask_user_for("Name");
-    let price_string = self.recipe_view.ask_user_for("Price");
-    let price = price_string.trim().parse::<i32>().unwrap();
+    let price = self.get_price();
     let description = self.recipe_view.ask_user_for("Description");
     let recipe = Recipe { name, price, description};
     self.recipe_repository.add(recipe);
-    true
   }
 
-  pub fn show_recipes(&self) -> bool {
+  pub fn get_price(&self) -> i32 {
+    let price_string = self.recipe_view.ask_user_for("Price");
+    return match price_string.trim().parse::<i32>() {
+      Ok(price) => price,
+      Err(_) => self.get_price(),
+    };
+  }
+
+  pub fn show_recipes(&self) {
     let recipes = self.recipe_repository.all();
     self.recipe_view.show_recipes(&recipes);
-    true
   }
 }

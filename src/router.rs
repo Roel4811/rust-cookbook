@@ -12,7 +12,7 @@ impl Router {
     Router { recipe_controller }
   }
 
-  pub fn run(&self) -> Result<String, Box<dyn error::Error>> {
+  pub fn run(&mut self) -> Result<String, Box<dyn error::Error>> {
     println!("Hi there! Welcome to the cookbook! What do you want to do?");
     let mut running = true;
   
@@ -41,16 +41,19 @@ impl Router {
     };
   }
   
-  fn route_action(&self, action: i32) -> bool {
-    return match action {
+  fn route_action(&mut self, action: i32) -> bool {
+    match action {
       1 => self.recipe_controller.show_recipes(),
       2 => self.recipe_controller.add_recipe(),
-      3 => self.quit(),
+      3 => {
+        self.quit();
+        return false
+      },
       _ => {
         println!("Wrong input!");
-        true
-      }
+      },
     };
+    true
   }
   
   fn show_actions(&self) {
@@ -61,9 +64,8 @@ impl Router {
     println!("3 - Quit");
   }
   
-  pub fn quit(&self) -> bool {
+  pub fn quit(&self) {
     println!("Thank you for using the cookbook!");
-    false
   }
 }
 
