@@ -12,9 +12,10 @@ impl Router {
   }
 
   pub fn run(&mut self) {
-    println!("{}", "Hi there! Welcome to the cookbook! What do you want to do?".blue().bold());
+    self.clear_screen();
+    println!("{}", "Welcome to Cookbook Rust!".blue().bold());
+
     let mut running = true;
-  
     while running {
       self.show_actions();
       let action = self.get_user_input();
@@ -40,8 +41,17 @@ impl Router {
   fn route_action(&mut self, action: i32) -> bool {
     match action {
       1 => self.recipe_controller.show_recipes(),
-      2 => self.recipe_controller.add_recipe(),
+      2 => {
+        self.recipe_controller.add_recipe();
+        self.clear_screen();
+        println!("{}", "Recipe added!".green())
+      },
       3 => {
+        self.recipe_controller.delete_recipe();
+        self.clear_screen();
+        println!("{}", "Recipe deleted!".green())
+      },
+      4 => {
         self.quit();
         return false
       },
@@ -57,7 +67,8 @@ impl Router {
     println!("What do you want to do? \n");
     println!("{}", "1 - Show recipes".italic().yellow());
     println!("{}", "2 - Add a recipes".italic().yellow());
-    println!("{}", "3 - Quit".italic().yellow());
+    println!("{}", "3 - Delete a recipes".italic().yellow());
+    println!("{}", "4 - Quit".italic().yellow());
   }
   
   fn quit(&self) {
