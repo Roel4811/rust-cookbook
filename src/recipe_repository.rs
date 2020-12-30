@@ -5,33 +5,56 @@ use std::fs;
 // #[derive(Debug)]
 pub struct RecipeRepository {
   pub recipes: Vec<Recipe>,
+  next_id: i32,
 }
 
 impl RecipeRepository {
   pub fn new() -> Result<RecipeRepository, csv::Error> {
     let recipes = import_csv()?;
-    let recipe_repository = RecipeRepository { recipes: recipes };
+    let next_id = (recipes.len() + 1) as i32;
+    let recipe_repository = RecipeRepository {
+      recipes: recipes,
+      next_id,
+    };
     Ok(recipe_repository)
   }
 
-  pub fn add(&mut self, recipe: Recipe) {
+  pub fn add(&mut self, name: String, price: i32, description: String) {
+    let id = self.next_id;
+    self.next_id = self.next_id + 1;
+
+    let recipe = Recipe {
+      id,
+      name,
+      price,
+      description,
+    };
     self.recipes.push(recipe);
     match write_csv(&self.recipes) {
       Ok(_res) => (),
-      Err(_err) => (),
+      Err(_err) => println!("Something went wrong saving your recipe(s)"),
     }
   }
 
   pub fn all(&self) -> &Vec<Recipe> {
     &self.recipes
   }
+
+  pub fn delete(&mut self, id: i32) {
+    let index = self.recipes.iter().position(|x| x.id == id).unwrap();
+    self.recipes.remove(index);
+    match write_csv(&self.recipes) {
+      Ok(_res) => (),
+      Err(_err) => println!("Something went wrong saving your recipe(s)"),
+    }
+  }
 }
 
 fn write_csv(recipes: &Vec<Recipe>) -> Result<(), Box<dyn Error>> {
   let mut wtr = csv::Writer::from_path("recipes.csv")?;
-  wtr.write_record(&["name", "price", "description"])?;
+  wtr.write_record(&["id", "name", "price", "description"])?;
   for recipe in recipes {
-    wtr.write_record(&[&recipe.name, &recipe.price.to_string(), &recipe.description])?;
+    wtr.write_record(&[&recipe.id.to_string(), &recipe.name, &recipe.price.to_string(), &recipe.description])?;
   }
   wtr.flush()?;
   Ok(())

@@ -1,4 +1,4 @@
-name,price,description
-Pasta,10,Carbonara
-Pizza,8,Margarita
-Soup,5,Potato Cream
+id,name,price,description
+1,Pasta,10,Carbonara
+2,Pizza,8,Margarita
+3,Soup,5,Potato Cream
