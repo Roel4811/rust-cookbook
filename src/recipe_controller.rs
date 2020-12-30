@@ -1,6 +1,5 @@
 use super::recipe_repository;
 use super::recipe_view;
-use super::recipe::Recipe;
 
 pub struct RecipeController {
   pub recipe_repository: recipe_repository::RecipeRepository,
@@ -17,22 +16,31 @@ impl RecipeController {
 
   pub fn add_recipe(&mut self) {
     let name = self.recipe_view.ask_user_for("Name");
-    let price = self.get_price();
+    let price = self.ask_user_and_convert_to_i32("Price");
     let description = self.recipe_view.ask_user_for("Description");
-    let recipe = Recipe { name, price, description};
-    self.recipe_repository.add(recipe);
+    self.recipe_repository.add(name, price, description);
   }
 
-  pub fn get_price(&self) -> i32 {
-    let price_string = self.recipe_view.ask_user_for("Price");
-    match price_string.trim().parse::<i32>() {
+  pub fn ask_user_and_convert_to_i32(&self, name: &str) -> i32 {
+    let price_string = self.recipe_view.ask_user_for(name);
+    match convert_to_i32(price_string) {
       Ok(price) => price,
-      Err(_) => self.get_price(),
+      Err(_) => self.ask_user_and_convert_to_i32(name),
     }
+  }
+
+  pub fn delete_recipe(&mut self) {
+    self.show_recipes();
+    let id = self.ask_user_and_convert_to_i32("ID");
+    self.recipe_repository.delete(id)
   }
 
   pub fn show_recipes(&self) {
     let recipes = self.recipe_repository.all();
     self.recipe_view.show_recipes(&recipes);
   }
+}
+
+fn convert_to_i32(s: String) -> Result<i32, std::num::ParseIntError> {
+  s.trim().parse::<i32>()
 }
