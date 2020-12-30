@@ -25,10 +25,10 @@ impl RecipeController {
 
   pub fn get_price(&self) -> i32 {
     let price_string = self.recipe_view.ask_user_for("Price");
-    return match price_string.trim().parse::<i32>() {
+    match price_string.trim().parse::<i32>() {
       Ok(price) => price,
       Err(_) => self.get_price(),
-    };
+    }
   }
 
   pub fn show_recipes(&self) {

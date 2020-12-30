@@ -1,6 +1,5 @@
 use ::std::*;
 use super::recipe::Recipe;
-// use std::error;
 
 pub struct RecipeView {}
 
@@ -13,13 +12,12 @@ impl RecipeView {
     String::from(input)
   }
 
-  pub fn show_recipes(&self, recipes: &Vec<Recipe>) -> bool {
+  pub fn show_recipes(&self, recipes: &Vec<Recipe>) {
     for recipe in recipes {
       println!(
         "name: {}, price: {}, description: {}",
         recipe.name, recipe.price, recipe.description
       )
     }
-    true
   }
 }
