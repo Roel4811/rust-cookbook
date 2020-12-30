@@ -1,7 +1,6 @@
+use colored::*;
 use ::std::*;
-
 use super::recipe_controller;
-use std::error;
 
 pub struct Router {
   pub recipe_controller: recipe_controller::RecipeController,
@@ -12,8 +11,8 @@ impl Router {
     Router { recipe_controller }
   }
 
-  pub fn run(&mut self) -> Result<String, Box<dyn error::Error>> {
-    println!("Hi there! Welcome to the cookbook! What do you want to do?");
+  pub fn run(&mut self) {
+    println!("{}", "Hi there! Welcome to the cookbook! What do you want to do?".blue().bold());
     let mut running = true;
   
     while running {
@@ -22,9 +21,6 @@ impl Router {
       self.clear_screen();
       running = self.route_action(action);
     }
-  
-    let result = String::from("Done");
-    Ok(result)
   }
   
   fn clear_screen(&self) {
@@ -50,21 +46,21 @@ impl Router {
         return false
       },
       _ => {
-        println!("Wrong input!");
+        println!("{}", "Wrong input!".red());
       },
     };
     true
   }
   
   fn show_actions(&self) {
-    println!("\n ================ \n");
-    println!("What do you want to do?");
-    println!("1 - Show recipes");
-    println!("2 - Add a recipes");
-    println!("3 - Quit");
+    println!("\n{}\n", "================".blue().bold());
+    println!("What do you want to do? \n");
+    println!("{}", "1 - Show recipes".italic().yellow());
+    println!("{}", "2 - Add a recipes".italic().yellow());
+    println!("{}", "3 - Quit".italic().yellow());
   }
   
-  pub fn quit(&self) {
+  fn quit(&self) {
     println!("Thank you for using the cookbook!");
   }
 }
