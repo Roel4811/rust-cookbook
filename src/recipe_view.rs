@@ -1,11 +1,11 @@
-use ::std::*;
 use super::recipe::Recipe;
+use ::std::*;
 
 pub struct RecipeView {}
 
 impl RecipeView {
   pub fn ask_user_for(&self, stuff: &str) -> String {
-    println!("Please give me a {}", stuff);
+    println!("\nPlease give me a {}", stuff);
     let mut x = String::with_capacity(10);
     io::stdin().read_line(&mut x).expect("Error reading input");
     let input = x.trim();
@@ -13,11 +13,16 @@ impl RecipeView {
   }
 
   pub fn show_recipes(&self, recipes: &Vec<Recipe>) {
+    println!(
+      "{0: <10} | {1: <10} | {2: <10} | {3: <10}",
+      "ID", "Name", "Price", "Description"
+    );
+
     for recipe in recipes {
       println!(
-        "name: {}, price: {}, description: {}",
-        recipe.name, recipe.price, recipe.description
-      )
+        "{0: <10} | {1: <10} | {2: <10} | {3: <10}",
+        recipe.id, recipe.name, recipe.price, recipe.description
+      );
     }
   }
 }
