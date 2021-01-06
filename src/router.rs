@@ -47,14 +47,22 @@ impl Router {
         println!("{}", "Recipe added!".green())
       },
       3 => {
-        self.recipe_controller.update_recipe();
-        self.clear_screen();
-        println!("{}", "Recipe updated!".green())
+        if self.recipe_controller.update_recipe() {
+          self.clear_screen();
+          println!("{}", "Recipe updated!".green())
+        } else {
+          self.clear_screen();
+          println!("Something went wrong updating your recipe(s)")
+        }
       },
       4 => {
-        self.recipe_controller.delete_recipe();
-        self.clear_screen();
-        println!("{}", "Recipe deleted!".green())
+        if self.recipe_controller.delete_recipe() {
+          self.clear_screen();
+          println!("{}", "Recipe deleted!".green())
+        } else {
+          self.clear_screen();
+          println!("Something went wrong deleting your recipe(s)")
+        }
       },
       5 => {
         self.quit();

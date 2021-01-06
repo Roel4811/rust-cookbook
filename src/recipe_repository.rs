@@ -40,12 +40,16 @@ impl RecipeRepository {
     &self.recipes
   }
 
-  pub fn delete(&mut self, id: i32) {
-    let index = self.recipes.iter().position(|x| x.id == id).unwrap();
-    self.recipes.remove(index);
+  pub fn delete(&mut self, id: i32) -> bool {
+    if let Some(index) = self.recipes.iter().position(|x| x.id == id) {
+      self.recipes.remove(index);
+    } else {
+      return false
+    }
+
     match write_csv(&self.recipes) {
-      Ok(_res) => (),
-      Err(_err) => println!("Something went wrong saving your recipe(s)"),
+      Ok(_res) => true,
+      Err(_err) => false,
     }
   }
 
@@ -53,13 +57,14 @@ impl RecipeRepository {
     self.recipes.iter_mut().find(|x| x.id == id)
   }
 
-  pub fn update(&mut self, id: i32, name: String, price: i32, description: String) {
+  pub fn update(&mut self, id: i32, name: String, price: i32, description: String) -> bool {
     if let Some(recipe) = self.find(id) {
       recipe.name = name;
       recipe.price = price;
       recipe.description = description;
+      true
     } else {
-      println!("Something went wrong updating your recipe(s)")
+      false
     }
   }
 }

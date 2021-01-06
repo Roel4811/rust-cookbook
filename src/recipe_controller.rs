@@ -29,7 +29,7 @@ impl RecipeController {
     }
   }
 
-  pub fn delete_recipe(&mut self) {
+  pub fn delete_recipe(&mut self) -> bool {
     self.show_recipes();
     let id = self.ask_user_and_convert_to_i32("ID");
     self.recipe_repository.delete(id)
@@ -40,7 +40,7 @@ impl RecipeController {
     self.recipe_view.show_recipes(&recipes);
   }
 
-  pub fn update_recipe(&mut self) {
+  pub fn update_recipe(&mut self) -> bool {
     self.show_recipes();
     let id = self.ask_user_and_convert_to_i32("ID");
     match self.recipe_repository.find(id) {
@@ -50,9 +50,7 @@ impl RecipeController {
         let description = self.recipe_view.ask_user_for("Description");
         self.recipe_repository.update(id, name, price, description)
       },
-      None => {
-        self.recipe_view.recipe_not_found()
-      }
+      None => false,
     }
   }
 }

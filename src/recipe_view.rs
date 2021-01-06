@@ -13,10 +13,6 @@ impl RecipeView {
     String::from(input)
   }
 
-  pub fn recipe_not_found(&self) {
-    println!("{}", "Recipe Not Found!".red());
-  }
-
   pub fn show_recipes(&self, recipes: &Vec<Recipe>) {
     println!(
       "{0: <10} | {1: <10} | {2: <10} | {3: <10}",
