@@ -1,5 +1,6 @@
 use super::recipe::Recipe;
 use ::std::*;
+use colored::*;
 
 pub struct RecipeView {}
 
@@ -10,6 +11,10 @@ impl RecipeView {
     io::stdin().read_line(&mut x).expect("Error reading input");
     let input = x.trim();
     String::from(input)
+  }
+
+  pub fn recipe_not_found(&self) {
+    println!("{}", "Recipe Not Found!".red());
   }
 
   pub fn show_recipes(&self, recipes: &Vec<Recipe>) {
