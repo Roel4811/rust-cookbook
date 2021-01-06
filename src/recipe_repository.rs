@@ -48,13 +48,32 @@ impl RecipeRepository {
       Err(_err) => println!("Something went wrong saving your recipe(s)"),
     }
   }
+
+  pub fn find(&mut self, id: i32) -> Option<&mut Recipe> {
+    self.recipes.iter_mut().find(|x| x.id == id)
+  }
+
+  pub fn update(&mut self, id: i32, name: String, price: i32, description: String) {
+    if let Some(recipe) = self.find(id) {
+      recipe.name = name;
+      recipe.price = price;
+      recipe.description = description;
+    } else {
+      println!("Something went wrong updating your recipe(s)")
+    }
+  }
 }
 
 fn write_csv(recipes: &Vec<Recipe>) -> Result<(), Box<dyn Error>> {
   let mut wtr = csv::Writer::from_path("recipes.csv")?;
   wtr.write_record(&["id", "name", "price", "description"])?;
   for recipe in recipes {
-    wtr.write_record(&[&recipe.id.to_string(), &recipe.name, &recipe.price.to_string(), &recipe.description])?;
+    wtr.write_record(&[
+      &recipe.id.to_string(),
+      &recipe.name,
+      &recipe.price.to_string(),
+      &recipe.description,
+    ])?;
   }
   wtr.flush()?;
   Ok(())
