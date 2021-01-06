@@ -39,6 +39,22 @@ impl RecipeController {
     let recipes = self.recipe_repository.all();
     self.recipe_view.show_recipes(&recipes);
   }
+
+  pub fn update_recipe(&mut self) {
+    self.show_recipes();
+    let id = self.ask_user_and_convert_to_i32("ID");
+    match self.recipe_repository.find(id) {
+      Some(_) => {
+        let name = self.recipe_view.ask_user_for("Name");
+        let price = self.ask_user_and_convert_to_i32("Price");
+        let description = self.recipe_view.ask_user_for("Description");
+        self.recipe_repository.update(id, name, price, description)
+      },
+      None => {
+        self.recipe_view.recipe_not_found()
+      }
+    }
+  }
 }
 
 fn convert_to_i32(s: String) -> Result<i32, std::num::ParseIntError> {
