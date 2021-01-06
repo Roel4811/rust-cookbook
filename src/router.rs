@@ -47,11 +47,16 @@ impl Router {
         println!("{}", "Recipe added!".green())
       },
       3 => {
+        self.recipe_controller.update_recipe();
+        self.clear_screen();
+        println!("{}", "Recipe updated!".green())
+      },
+      4 => {
         self.recipe_controller.delete_recipe();
         self.clear_screen();
         println!("{}", "Recipe deleted!".green())
       },
-      4 => {
+      5 => {
         self.quit();
         return false
       },
@@ -66,9 +71,10 @@ impl Router {
     println!("\n{}\n", "================".blue().bold());
     println!("What do you want to do? \n");
     println!("{}", "1 - Show recipes".italic().yellow());
-    println!("{}", "2 - Add a recipes".italic().yellow());
-    println!("{}", "3 - Delete a recipes".italic().yellow());
-    println!("{}", "4 - Quit".italic().yellow());
+    println!("{}", "2 - Add a recipe".italic().yellow());
+    println!("{}", "3 - Update a recipe".italic().yellow());
+    println!("{}", "4 - Delete a recipe".italic().yellow());
+    println!("{}", "5 - Quit".italic().yellow());
   }
   
   fn quit(&self) {
